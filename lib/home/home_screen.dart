@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 
 import '../constants.dart' show Constants, AppColors;
 
+enum ActionItems {
+  GROUP_CHAT, ADD_FRIEND, QR_SCAN, PAYMENT
+}
+
 class NavigationIconView {
   final String _title;
   final IconData _icon;
@@ -80,6 +84,19 @@ class _HomeScreenState extends State<HomeScreen> {
     ];
   }
 
+  _buildPopupMunuItem(int iconName, String title) {
+    return Row(
+      children: <Widget>[
+        Icon(IconData(
+          iconName,
+          fontFamily: Constants.IconFontFamily
+        )),
+        Container(width: 12.0),
+        Text(title)
+      ]
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final BottomNavigationBar botNavBar = BottomNavigationBar(
@@ -96,14 +113,44 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         title:Text('微信'),
         actions: [
-          IconButton(
-            icon: Icon(Icons.search),
-            onPressed: () { print('点击了搜索按钮'); },
+          Container(
+            padding: const EdgeInsets.only(right: 16.0),
+            child: IconButton(
+              icon: Icon(IconData(
+                0xe605,
+                fontFamily: Constants.IconFontFamily,
+              ), size: 22.0),
+              onPressed: () { print('点击了搜索按钮'); },
+            ),
           ),
-          IconButton(
-            icon: Icon(Icons.add),
-            onPressed: () { print('显示下拉列表'); },
-          )
+          PopupMenuButton(
+            itemBuilder: (BuildContext context) {
+              return <PopupMenuItem<ActionItems>>[
+                PopupMenuItem(
+                  child: _buildPopupMunuItem(0xe606, "发起群聊"),
+                  value: ActionItems.GROUP_CHAT,
+                ),
+                PopupMenuItem(
+                  child: _buildPopupMunuItem(0xe638, "添加朋友"),
+                  value: ActionItems.ADD_FRIEND,
+                ),
+                PopupMenuItem(
+                  child: _buildPopupMunuItem(0xe79b, "扫一扫"),
+                  value: ActionItems.QR_SCAN,
+                ),
+                PopupMenuItem(
+                  child: _buildPopupMunuItem(0xe658, "收付款"),
+                  value: ActionItems.PAYMENT,
+                ),
+              ];
+            },
+            icon: Icon(IconData(
+              0xe66b,
+              fontFamily: Constants.IconFontFamily,
+            ), size: 22.0),
+            onSelected: (ActionItems selected) { print("点击的是$selected"); },
+          ),
+          Container(width: 16.0),
         ],
       ),
       body: Container(
