@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
 
+import '../constants.dart' show Constants;
+
 class NavigationIconView {
   final String _title;
-  final Widget _icon;
-  final Widget _activeIcon;
+  final IconData _icon;
+  final IconData _activeIcon;
   final BottomNavigationBarItem item;
 
-  NavigationIconView({Key key, String title, Widget icon, Widget activeIcon}) :
+  NavigationIconView({Key key, String title, IconData icon, IconData activeIcon}) :
     _title = title,
     _icon = icon,
     _activeIcon = activeIcon,
     item = BottomNavigationBarItem(
-      icon: icon,
-      activeIcon: activeIcon,
+      icon: Icon(icon),
+      activeIcon: Icon(activeIcon),
       title: Text(title),
       backgroundColor: Colors.white
     );
@@ -30,23 +32,47 @@ class _HomeScreenState extends State<HomeScreen> {
     _navigationViews = [
       NavigationIconView(
         title: '微信',
-        icon: Icon(Icons.ac_unit),
-        activeIcon: Icon(Icons.access_alarm)
+        icon: IconData(
+          0xe608,
+          fontFamily: Constants.IconFontFamily,
+        ),
+        activeIcon: IconData(
+          0xe603,
+          fontFamily: Constants.IconFontFamily,
+        )
       ),
       NavigationIconView(
         title: '通讯录',
-        icon: Icon(Icons.verified_user),
-        activeIcon: Icon(Icons.vertical_align_bottom)
+        icon: IconData(
+          0xe601,
+          fontFamily: Constants.IconFontFamily,
+        ),
+        activeIcon: IconData(
+          0xe656,
+          fontFamily: Constants.IconFontFamily,
+        )
       ),
       NavigationIconView(
         title: '发现',
-        icon: Icon(Icons.radio),
-        activeIcon: Icon(Icons.radio_button_checked)
+        icon: IconData(
+          0xe607,
+          fontFamily: Constants.IconFontFamily,
+        ),
+        activeIcon: IconData(
+          0xe630,
+          fontFamily: Constants.IconFontFamily,
+        )
       ),
       NavigationIconView(
         title: '我',
-        icon: Icon(Icons.satellite),
-        activeIcon: Icon(Icons.save)
+        icon: IconData(
+          0xe626,
+          fontFamily: Constants.IconFontFamily,
+        ),
+        activeIcon: IconData(
+          0xe626,
+          fontFamily: Constants.IconFontFamily,
+        )
       ),
     ];
   }
