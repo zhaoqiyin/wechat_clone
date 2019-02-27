@@ -55,22 +55,22 @@ class _HomeScreenState extends State<HomeScreen> {
       NavigationIconView(
         title: '发现',
         icon: IconData(
-          0xe607,
+          0xe600,
           fontFamily: Constants.IconFontFamily,
         ),
         activeIcon: IconData(
-          0xe630,
+          0xe671,
           fontFamily: Constants.IconFontFamily,
         )
       ),
       NavigationIconView(
         title: '我',
         icon: IconData(
-          0xe626,
+          0xe607,
           fontFamily: Constants.IconFontFamily,
         ),
         activeIcon: IconData(
-          0xe626,
+          0xe630,
           fontFamily: Constants.IconFontFamily,
         )
       ),
