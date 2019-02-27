@@ -32,6 +32,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  int _currentIndex = 0;
   List<NavigationIconView> _navigationViews;
 
   void initState() {
@@ -55,7 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
           fontFamily: Constants.IconFontFamily,
         ),
         activeIcon: IconData(
-          0xe656,
+          0xe602,
           fontFamily: Constants.IconFontFamily,
         )
       ),
@@ -66,7 +67,7 @@ class _HomeScreenState extends State<HomeScreen> {
           fontFamily: Constants.IconFontFamily,
         ),
         activeIcon: IconData(
-          0xe671,
+          0xe604,
           fontFamily: Constants.IconFontFamily,
         )
       ),
@@ -103,15 +104,18 @@ class _HomeScreenState extends State<HomeScreen> {
       items: _navigationViews.map((NavigationIconView view){
         return view.item;
       }).toList(),
-      currentIndex: 0,
+      currentIndex: _currentIndex,
       type: BottomNavigationBarType.fixed,
       onTap: (int index){
-        print('点击的是第$index个Tab');
+        setState(() {
+          _currentIndex = index;          
+        });
       },
     );
     return Scaffold(
       appBar: AppBar(
         title:Text('微信'),
+        elevation: 0.0,
         actions: [
           Container(
             padding: const EdgeInsets.only(right: 16.0),
