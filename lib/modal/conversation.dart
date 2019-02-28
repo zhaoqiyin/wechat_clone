@@ -24,6 +24,14 @@ class Conversation {
   final int titleColor;
   final int unreadMsgCount;
   final bool displayDot;
+
+  bool isAvatarFromNet() {
+    if (this.avatar.indexOf('http') == 0 || this.avatar.indexOf('https') == 0) {
+      return true;
+    }
+    
+    return false;
+  }
 }
 
 const List<Conversation> mockConversation = [
