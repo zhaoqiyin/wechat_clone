@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 
 import '../constants.dart' show AppColors;
 
+enum Device {
+  Mac, WIN
+}
+
 class Conversation {
   const Conversation({
     @required this.avatar,
@@ -29,7 +33,7 @@ class Conversation {
     if (this.avatar.indexOf('http') == 0 || this.avatar.indexOf('https') == 0) {
       return true;
     }
-    
+
     return false;
   }
 }
@@ -134,3 +138,8 @@ const List<Conversation> mockConversation = [
       unreadMsgCount: 0,
     ),
 ];
+
+const Map<String, List<Conversation>> mockConversationData = {
+  'deviceInfo': null,
+  'conversation': mockConversation
+};
