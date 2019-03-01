@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../constants.dart' show AppColors, AppStyles, Constants;
-import '../modal/conversation.dart' show Conversation, mockConversation, Device;
+import '../modal/conversation.dart' show Conversation, Device, ConversationPageData;
 
 class _ConversationItem extends StatelessWidget {
   const _ConversationItem({Key key, this.conversation})
@@ -167,16 +167,25 @@ class ConversationPage extends StatefulWidget {
 }
 
 class _ConversationPageState extends State<ConversationPage> {
+  final ConversationPageData data =ConversationPageData.mock();
+
   @override
   Widget build(BuildContext context) {
+    var mockConversations = data.conversations;
     return ListView.builder(
       itemBuilder: (BuildContext context, int index) {
-        if(index == 0) {
-          return _DeviceInfoItem(device: Device.Mac,);
+        if(data.device != null ) {
+          // 需要显示其他设备的登录信息
+          if(index == 0) {
+            return _DeviceInfoItem(device: data.device,);
+          }
+          return _ConversationItem(conversation: mockConversations[index - 1]);
+        } else {
+          // 不需要显示其他设备的登录信息
+          return _ConversationItem(conversation: mockConversations[index]);
         }
-        return _ConversationItem(conversation: mockConversation[index]);
       },
-      itemCount: mockConversation.length,
+      itemCount: data.device != null ? mockConversations.length + 1 : mockConversations.length, 
     );
   }
 }
