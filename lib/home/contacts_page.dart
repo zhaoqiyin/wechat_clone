@@ -40,7 +40,7 @@ class _ContactItem extends StatelessWidget {
 
     // 列表项主题部分
     Widget _button = Container(
-      padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
+      padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 10.0, bottom: 10.0),
       decoration: BoxDecoration(
         border: Border(
           bottom: BorderSide(width: Constants.DividerWidth, 
@@ -62,6 +62,7 @@ class _ContactItem extends StatelessWidget {
       _itemBody = Column(
         children: <Widget>[
           Container(
+            padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 4.0, bottom: 4.0),
             color: const Color(AppColors.ContactGroupTitleBg),
             alignment: Alignment.centerLeft,
             child: Text(this.groupTitle, style: AppStyles.GroupTitleItemTextStyle),
@@ -73,10 +74,7 @@ class _ContactItem extends StatelessWidget {
       _itemBody = _button;
     }
 
-    return Container(
-      padding: EdgeInsets.only(left: 16.0, right: 16.0, top: 0.0, bottom: 0.0),
-      child: _itemBody,
-    );
+    return _itemBody;
   }
 }
 
@@ -115,6 +113,7 @@ class _ContactsPagesState extends State<ContactsPages> {
   void initState() {
     super.initState();
     _contacts..addAll(data.contacts)..addAll(data.contacts)..addAll(data.contacts);
+    _contacts.sort((Contact a, Contact b) => a.nameIndex.compareTo(b.nameIndex));
   }
 
   @override
@@ -125,11 +124,15 @@ class _ContactsPagesState extends State<ContactsPages> {
           return _functionButtons[index];
         }
         int _contactIndex = index - _functionButtons.length;
+        bool _isGroupTitle = true;
         Contact _contact = _contacts[_contactIndex];
+        if(_contactIndex >=1 && _contact.nameIndex == _contacts[_contactIndex - 1].nameIndex) {
+          
+        }
         return _ContactItem(
           avatar: _contact.avatar, 
           title: _contact.name, 
-          groupTitle: _contact.nameIndex
+          groupTitle: _isGroupTitle ? _contact.nameIndex : null
         );
       },
       itemCount: _contacts.length + _functionButtons.length,
