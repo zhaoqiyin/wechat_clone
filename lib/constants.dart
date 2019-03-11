@@ -52,4 +52,5 @@ class Constants {
   static const UnReadMsgNotifyDotSize = 20.0;
   static const ConversationMuteIconSize = 18.0;
   static const ContactAvatarSize = 36.0;
+  static const IndexBarWidth = 24.0;
 }
