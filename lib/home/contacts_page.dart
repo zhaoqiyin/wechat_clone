@@ -16,8 +16,19 @@ class _ContactItem extends StatelessWidget {
   final String groupTitle;
   final VoidCallback onPressed;
 
+  static const double MARGIN_VERTICAL = 10.0;
+  static const double GROUP_TITLE_HEIGHT = 24.0;
+
   bool get _isAvatarFromNet {
     return this.avatar.startsWith('http') || this.avatar.startsWith('https');
+  }
+
+  static double _height(bool hasGroupTitle) {
+    final _buttonHeight = MARGIN_VERTICAL *2 + Constants.ContactAvatarSize + Constants.DividerWidth;
+    if(hasGroupTitle) {
+      return _buttonHeight + GROUP_TITLE_HEIGHT;
+    }
+    return _buttonHeight;
   }
 
   @override
@@ -41,7 +52,7 @@ class _ContactItem extends StatelessWidget {
     // 列表项主题部分
     Widget _button = Container(
       margin: const EdgeInsets.symmetric(horizontal: 16.0),
-      padding: const EdgeInsets.symmetric(vertical: 10.0),
+      padding: const EdgeInsets.symmetric(vertical: MARGIN_VERTICAL),
       decoration: BoxDecoration(
         border: Border(
           bottom: BorderSide(width: Constants.DividerWidth, 
@@ -63,6 +74,7 @@ class _ContactItem extends StatelessWidget {
       _itemBody = Column(
         children: <Widget>[
           Container(
+            height: GROUP_TITLE_HEIGHT,
             padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 4.0, bottom: 4.0),
             color: const Color(AppColors.ContactGroupTitleBg),
             alignment: Alignment.centerLeft,
@@ -88,11 +100,14 @@ const INDEX_BAR_WORDS = [
 ];
 
 class ContactsPages extends StatefulWidget {
+  Color _indexBarBg = Colors.transparent;
+
   @override
   _ContactsPagesState createState() => _ContactsPagesState();
 }
 
 class _ContactsPagesState extends State<ContactsPages> {
+  ScrollController _scrollController;
   final ContactsPageData data = ContactsPageData.mock();
   final List<Contact> _contacts = [];
   final List<_ContactItem> _functionButtons = [
@@ -117,12 +132,32 @@ class _ContactsPagesState extends State<ContactsPages> {
       onPressed: () { print('添加公众号。'); },
     ),
   ];
+  final Map _letterPosMap = {INDEX_BAR_WORDS[0]: 0.0};
 
   @override
   void initState() {
     super.initState();
     _contacts..addAll(data.contacts)..addAll(data.contacts)..addAll(data.contacts);
     _contacts.sort((Contact a, Contact b) => a.nameIndex.compareTo(b.nameIndex));
+    _scrollController = new ScrollController();
+    // 计算用于 IndexBar 进行定位的关键通讯录列表项的位置
+    var _totalPos = _functionButtons.length * _ContactItem._height(false);
+    for (var i = 0; i < _contacts.length; i++) {
+      bool _hasGroupTitle = true;
+      if(i > 0 && _contacts[i].nameIndex.compareTo(_contacts[i - 1].nameIndex) == 0) {
+        _hasGroupTitle = false;
+      }
+      if(_hasGroupTitle) {
+        _letterPosMap[_contacts[i].nameIndex] = _totalPos;
+      }
+      _totalPos += _ContactItem._height(_hasGroupTitle);
+    }
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();    
+    super.dispose();
   }
 
   @override
@@ -132,9 +167,11 @@ class _ContactsPagesState extends State<ContactsPages> {
         child: Text(word),
       );
     }).toList();
+
     return Stack(
       children: <Widget>[
         ListView.builder(
+          controller: _scrollController,
           itemBuilder: (BuildContext context, int index) {
             if(index < _functionButtons.length) {
               return _functionButtons[index];
@@ -158,9 +195,31 @@ class _ContactsPagesState extends State<ContactsPages> {
           right: 0.0,
           top: 0.0,
           bottom: 0.0,
-          child: Column(
-            children: _letters,
-          ),
+          child: Container(
+            color: widget._indexBarBg,
+            child: GestureDetector(
+              onVerticalDragDown: (DragDownDetails details) {
+                _scrollController.animateTo(_letterPosMap['A'], 
+                  curve: Curves.easeIn, duration: Duration(milliseconds: 200));
+                setState(() {
+                  widget._indexBarBg = Colors.black26;
+                });
+              },
+              onVerticalDragEnd: (DragEndDetails details) {
+                setState(() {
+                  widget._indexBarBg = Colors.transparent;
+                });
+              },
+              onVerticalDragCancel: () {
+                setState(() {
+                  widget._indexBarBg = Colors.transparent;
+                });
+              },
+              child: Column(
+                children: _letters,
+              ),
+            )
+          )
         )
       ]
     );
