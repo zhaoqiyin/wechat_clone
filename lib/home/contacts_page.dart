@@ -161,7 +161,7 @@ class _ContactsPagesState extends State<ContactsPages> {
     super.dispose();
   }
 
-  String _getLetters(BuildContext context, int tileHeight, Offset globalPos) {
+  String _getLetters(BuildContext context, double tileHeight, Offset globalPos) {
     RenderBox _box = context.findRenderObject();
     var local = _box.globalToLocal(globalPos);
     int index = (local.dy ~/ tileHeight).clamp(0, INDEX_BAR_WORDS.length - 1);
@@ -186,7 +186,7 @@ class _ContactsPagesState extends State<ContactsPages> {
     }).toList();
 
     final double _totalHeight = constraints.biggest.height;
-    final int _tileHeight = _totalHeight ~/ _letters.length;
+    final double _tileHeight = _totalHeight / _letters.length;
     return GestureDetector(
       onVerticalDragDown: (DragDownDetails details) {
         setState(() {
