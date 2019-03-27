@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class AppColors {
+  static const BackgroundColor = 0xffebebeb;
   static const AppBarColor = 0xff303030;
   static const TabIconActive  = 0xff46c11b;
   static const TabIconNormal = 0xff999999;
@@ -61,4 +62,5 @@ class Constants {
   static const IndexBarWidth = 24.0;
   static const IndexLetterBoxSize = 114.0;
   static const IndexLetterBoxRadius = 4.0;
+  static const FullWidthIconButtonIconSize = 24.0;
 }
